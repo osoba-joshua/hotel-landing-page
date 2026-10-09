@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L'Horizon — Nasarawa State, Nigeria</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%230f1110'/%3E%3Cpath d='M18 58 Q35 42 50 58 Q65 74 82 58' stroke='%23c8a97e' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='32' r='8' fill='%23c8a97e'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e100f;
+    --card-bg: #171917;
+    --surface: #1c1f1c;
+    --text: #f5f3ee;
+    --muted: #9a9e98;
+    --accent: #c8a97e;
+    --accent-hover: #dfbe91;
+    --accent-dim: rgba(200, 169, 126, 0.14);
+    --border: rgba(245, 243, 238, 0.12);
+    --border-light: rgba(245, 243, 238, 0.06);
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Manrope', sans-serif;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
+  body {
+    background-color: var(--bg); color: var(--text); font-family: var(--sans);
+    overflow-x: hidden; width: 100%; -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: inherit; }
+  button { font-family: var(--sans); }
+  
+  /* Standard Icon Class */
+  svg.icon { width: 1.1em; height: 1.1em; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: -0.2em; }
+  .icon-sm { width: 0.9em; height: 0.9em; stroke-width: 2; }
+  .icon-lg { width: 1.4em; height: 1.4em; }
+
+  @media print {
+    body * { visibility: hidden; }
+    #view-confirmation, #view-confirmation * { visibility: visible; }
+    #view-confirmation { position: absolute; left: 0; top: 0; width: 100%; padding: 0; }
+    header, footer, .scroll-progress, .btn-accent, .btn-outline, .no-print { display: none !important; }
+    .confirmation-box { border: none; margin: 0; max-width: 100%; box-shadow: none; }
+    body { background: #fff; color: #000; }
+    .summary-row { border-bottom: 1px solid #ddd; }
+  }
+
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 1100; width: 0%; transition: width 0.1s linear; }
+
+  /* Preloader */
+  .loader { position: fixed; inset: 0; background: var(--bg); z-index: 9000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 5vw; text-align: center; }
+  .loader-mark { width: 46px; height: 46px; margin-bottom: 1.4rem; opacity: 0; }
+  .loader-brand { font-family: var(--serif); font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 300; letter-spacing: 4px; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); }
+  .loader-sub { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 2px; color: var(--muted); margin-top: 0.9rem; opacity: 0; text-transform: uppercase; display: flex; align-items: center; gap: 0.4rem; justify-content: center; }
+
+  /* Header */
+  /* Dynamic Island Header */
+  header { 
+    position: fixed; 
+    top: 1.5rem; 
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 92%; 
+    max-width: 1100px;
+    padding: 1rem 2rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    z-index: 1000; 
+    background: rgba(23, 25, 23, 0.65); 
+    backdrop-filter: blur(16px); 
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  header.scrolled { 
+    top: 0.8rem; 
+    width: 75%; 
+    padding: 0.7rem 1.8rem; 
+    background: rgba(23, 25, 23, 0.95); 
+    border-color: var(--border-light); 
+  }
+  .logo { font-family: var(--serif); font-size: 1.45rem; font-weight: 400; letter-spacing: 3px; text-decoration: none; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+  .logo svg { width: 22px; height: 22px; color: var(--accent); }
+  nav { display: flex; gap: 1.8rem; align-items: center; }
+  nav a { text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 400; opacity: 0.72; transition: opacity 0.25s, color 0.25s; cursor: pointer; position: relative; text-transform: uppercase; letter-spacing: 1px; }
+  nav a::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 1px; background: var(--accent); transition: width 0.3s var(--ease); }
+  nav a:hover, nav a.active { opacity: 1; color: var(--accent); }
+  nav a:hover::after, nav a.active::after { width: 100%; }
+  .header-actions { display: flex; align-items: center; gap: 1rem; }
+  .hamburger { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 0.4rem; }
+  .hamburger svg { width: 24px; height: 24px; }
+
+  .btn-accent { background: var(--accent); color: var(--bg); border: none; padding: 0.8rem 1.7rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: 0.3s var(--ease); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .btn-accent:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 20px -8px rgba(200,169,126,0.5); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 0.8rem 1.7rem; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: 0.3s var(--ease); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .field-group { display: flex; flex-direction: column; gap: 0.6rem; }
+  .field-group label { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; letter-spacing: 1px; }
+  .field-group input, .field-group select, .field-group textarea { background: var(--surface); border: 1px solid var(--border-light); color: var(--text); padding: 0.85rem 1rem; font-family: var(--sans); font-size: 0.9rem; outline: none; transition: border-color 0.3s, box-shadow 0.3s; border-radius: 4px; color-scheme: dark; }
+  .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(200,169,126,0.1); }
+
+  .mobile-panel { position: fixed; top: 0; right: -100%; width: min(340px, 86vw); height: 100vh; background: var(--card-bg); border-left: 1px solid var(--border); z-index: 1200; transition: right 0.4s var(--ease); padding: 6rem 2.2rem 2rem; display: flex; flex-direction: column; gap: 1.6rem; }
+  .mobile-panel.open { right: 0; }
+  .mobile-panel a { font-family: var(--serif); font-size: 1.5rem; text-decoration: none; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.8rem;}
+  .mobile-panel-close { position: absolute; top: 1.6rem; right: 1.6rem; background: none; border: none; color: var(--text); cursor: pointer; }
+  .scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1150; opacity: 0; pointer-events: none; transition: opacity 0.35s; backdrop-filter: blur(4px); }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+
+  .view-section { display: none; padding-top: 90px; min-height: 100vh; animation: fadeIn 0.6s var(--ease); }
+  .view-section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+  .section-pad { padding: 10vh 5vw; }
+  .section-title { font-family: var(--serif); font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; max-width: 800px; }
+  .kicker { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; color: var(--accent); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; }
+  .kicker .rule { width: 40px; height: 1px; background: var(--accent); display: inline-block; }
+
+  /* Hero */
+  .hero { position: relative; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 5vw; text-align: center; background: linear-gradient(180deg, rgba(14,16,15,0.4) 0%, rgba(14,16,15,0.85) 100%), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat; }
+  .hero-content { max-width: 900px; margin-top: 4rem; z-index: 2; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.5rem; text-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+  .hero p { font-size: 1.15rem; color: #fff; max-width: 650px; line-height: 1.7; font-weight: 300; margin: 0 auto 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  
+  .hero-highlights { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2.5rem; font-weight: 500; }
+  .hero-highlights span.dot { color: var(--muted); }
+
+  .scroll-cue { position: absolute; bottom: 5vh; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; color: var(--text); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; z-index: 2; }
+  .scroll-cue .line { width: 1px; height: 50px; background: linear-gradient(var(--accent), transparent); animation: cueMove 2s ease-in-out infinite; }
+  @keyframes cueMove { 0%,100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 1; transform: translateY(8px); } }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 4rem; align-items: center; }
+
+  /* Rooms Layout */
+  .rooms-layout { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; align-items: start; }
+  .filter-sidebar { background: var(--card-bg); border: 1px solid var(--border-light); padding: 2rem; border-radius: 6px; position: sticky; top: 120px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+  .filter-sidebar h4 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;}
+
+  .room-card { background: var(--card-bg); border: 1px solid var(--border-light); overflow: hidden; transition: transform 0.5s var(--ease), border-color 0.5s, box-shadow 0.5s; border-radius: 6px; display: flex; flex-direction: column; }
+  .room-card:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+  .room-img-wrap { position: relative; overflow: hidden; height: 280px; cursor: pointer; }
+  .room-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--ease); filter: brightness(0.9); }
+  .room-img-wrap:hover img { transform: scale(1.08); filter: brightness(1); }
+  .room-badge { position: absolute; top: 16px; left: 16px; background: rgba(14,16,15,0.85); backdrop-filter: blur(8px); color: var(--accent); font-size: 0.7rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-dim); border-radius: 30px; text-transform: uppercase; letter-spacing: 1px; }
+  .room-info { padding: 2rem; display: flex; flex-direction: column; flex: 1; }
+  .room-name { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; cursor: pointer; transition: color 0.3s; margin-bottom: 0.4rem; }
+  .room-name:hover { color: var(--accent); }
+  .room-rating { display: flex; align-items: center; gap: 0.3rem; color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; }
+  .room-rating svg { width: 14px; height: 14px; }
+  .room-price { font-family: var(--serif); font-size: 1.5rem; color: var(--accent); font-weight: 500; letter-spacing: 0.5px; }
+  .room-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; font-weight: 300; flex: 1; }
+  .room-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 1.5rem; margin-top: auto; flex-wrap: wrap; gap: 1rem; }
+  .room-specs { font-size: 0.85rem; color: var(--muted); display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .room-specs span { display: flex; align-items: center; gap: 0.4rem; }
+  .room-specs svg { color: var(--accent); }
+
+  /* Room Details Page Specifics */
+  .detail-feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 3rem; }
+  .detail-feature-list li { display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+  .detail-feature-list li svg { color: var(--accent); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+  
+  .benefit-card { background: var(--card-bg); border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 6px; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+  .benefit-card svg { color: var(--accent); width: 24px; height: 24px; flex-shrink: 0; stroke-width: 1.5;}
+  .benefit-card h5 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.3rem; color: var(--text); }
+  .benefit-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+  /* Amenities */
+  .amenity-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 6rem; }
+  .amenity-row:nth-child(even) .amenity-img-wrap { order: 2; }
+  .amenity-img-wrap { border-radius: 6px; overflow: hidden; height: 450px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); position: relative; }
+  .amenity-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); filter: brightness(0.9); }
+  .amenity-row:hover .amenity-img-wrap img { transform: scale(1.05); filter: brightness(1.05); }
+  .amenity-content h3 { font-family: var(--serif); font-size: 2.4rem; margin-bottom: 1rem; color: var(--text); transition: color 0.3s; }
+  .amenity-row:hover .amenity-content h3 { color: var(--accent); }
+  .amenity-content p { color: var(--muted); line-height: 1.8; font-size: 1.05rem; font-weight: 300; }
+
+  /* Premium Gallery */
+  .gallery-wow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-rows: 280px; gap: 1.5rem; }
+  .gallery-wow-grid .g-item { overflow: hidden; position: relative; border-radius: 6px; cursor: pointer; background: var(--surface); }
+  .gallery-wow-grid .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease), filter 0.5s; filter: brightness(0.85); }
+  .gallery-wow-grid .span-large { grid-column: span 2; grid-row: span 2; }
+  .gallery-wow-grid .span-tall { grid-row: span 2; }
+  .gallery-wow-grid .span-wide { grid-column: span 2; }
+  .gallery-wow-grid .g-item:hover img { transform: scale(1.08); filter: brightness(1.1); }
+  .g-overlay { position: absolute; inset: 0; background: rgba(14,16,15,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.4s var(--ease); z-index: 2; }
+  .g-overlay svg { width: 40px; height: 40px; color: #fff; transform: scale(0.5); transition: 0.4s var(--ease); }
+  .gallery-wow-grid .g-item:hover .g-overlay { opacity: 1; }
+  .gallery-wow-grid .g-item:hover .g-overlay svg { transform: scale(1); }
+  .g-caption { position: absolute; bottom: -50px; left: 0; width: 100%; padding: 1.5rem; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: #fff; font-family: var(--serif); font-size: 1.2rem; transition: bottom 0.4s var(--ease); z-index: 3; }
+  .gallery-wow-grid .g-item:hover .g-caption { bottom: 0; }
+
+  /* Lightbox */
+  .lightbox { position: fixed; inset: 0; background: rgba(10,12,11,0.98); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease); padding: 2rem; }
+  .lightbox.active { opacity: 1; pointer-events: auto; }
+  .lightbox img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s var(--ease); }
+  .lightbox.active img { transform: scale(1); }
+  .lightbox-caption { color: var(--accent); margin-top: 1.5rem; font-family: var(--serif); font-size: 1.5rem; }
+  .lightbox-close { position: absolute; top: 2rem; right: 2rem; color: var(--text); background: none; border: none; font-size: 3rem; font-weight: 300; cursor: pointer; line-height: 1; transition: color 0.3s; }
+  .lightbox-close:hover { color: var(--accent); }
+
+  /* TEAM SECTION UPGRADE */
+  .team-featured { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 6rem; background: var(--surface); border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; }
+  .team-featured-img { width: 100%; height: 500px; object-fit: cover; }
+  .team-featured-content { padding: 3rem; }
+  .team-quote { font-family: var(--serif); font-size: 1.8rem; font-style: italic; color: var(--accent); margin-bottom: 1.5rem; line-height: 1.4; }
+  .team-quote::before { content: '"'; font-size: 3rem; line-height: 0; color: var(--border); vertical-align: -0.4em; margin-right: 0.2em; }
+  
+  .team-grid-upgraded { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
+  .team-card-v2 { text-align: left; }
+/* Optimized Staff Image Viewing */
+  .team-card-v2 img { 
+    width: 100%; 
+    height: 400px; 
+    object-fit: cover; 
+    object-position: center 15%; /* Keeps faces in frame */
+    border-radius: 8px; 
+    margin-bottom: 1.5rem; 
+    filter: grayscale(40%) contrast(110%); /* Moody but clearer than 20% grayscale */
+    transition: all 0.5s var(--ease); 
+  }  .team-card-v2:hover img { filter: grayscale(0%); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+  .team-card-v2 .role { color: var(--accent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; font-weight: 600; }
+  .team-card-v2 .name { font-family: var(--serif); font-size: 1.8rem; margin-bottom: 1rem; }
+  .team-card-v2 p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
+
+  /* CARE SECTION UPGRADE */
+  .care-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-form-box { background: var(--card-bg); padding: 3rem; border: 1px solid var(--border-light); border-radius: 6px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+  
+  .contact-card-v2 { display: flex; align-items: flex-start; gap: 1.2rem; margin-bottom: 2rem; }
+  .contact-card-v2 .icon-wrap { width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .contact-card-v2 h4 { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.3rem; }
+  .contact-card-v2 p, .contact-card-v2 a { color: var(--muted); font-size: 0.95rem; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;}
+  .contact-card-v2 a:hover { color: var(--accent); }
+
+  .faq-item { border-bottom: 1px solid var(--border-light); padding: 1.5rem 0; }
+  .faq-question { font-family: var(--serif); font-size: 1.3rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: color 0.3s; }
+  .faq-question:hover { color: var(--accent); }
+  .faq-question svg { width: 20px; height: 20px; transition: transform 0.3s; }
+  .faq-question.active svg { transform: rotate(180deg); color: var(--accent); }
+  .faq-answer { font-size: 0.95rem; color: var(--muted); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease), margin-top 0.4s; }
+  .faq-question.active + .faq-answer { max-height: 200px; margin-top: 1rem; }
+
+  /* Booking & Summary */
+  .booking-layout { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; }
+  .stepper { display: flex; gap: 3rem; margin-bottom: 4rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1.5rem; }
+  .step-num { font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 0.8rem; transition: color 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+  .step-circle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.3s; flex-shrink: 0; }
+  .step-num.active { color: var(--accent); font-weight: 600; }
+  .step-num.active .step-circle { border-color: var(--accent); background: var(--accent-dim); }
+  .step-num.done .step-circle { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--border); padding: 2.5rem; border-radius: 6px; position: sticky; top: 120px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border-light); font-size: 0.9rem; align-items: center; }
+  .summary-row span { display: flex; align-items: center; gap: 0.5rem; }
+  .summary-row.total { border-bottom: none; font-size: 1.4rem; font-family: var(--serif); color: var(--accent); padding-top: 1.5rem; font-weight: 600; }
+  .payment-box { background: var(--surface); border: 1px solid var(--border-light); padding: 2rem; border-radius: 6px; margin-bottom: 2rem; }
+  .confirmation-box { max-width: 700px; margin: 2rem auto; background: var(--card-bg); border: 1px solid var(--border); padding: 4rem; text-align: center; border-radius: 6px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .check-icon { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 2.5rem; background: var(--accent-dim); }
+  .check-icon svg { width: 40px; height: 40px; color: var(--accent); }
+
+  footer { background: #070807; border-top: 1px solid var(--border-light); padding: 12vh 5vw 5vh; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 4rem; margin-top: 10vh; }
+  footer h5 { font-size: 0.85rem; color: var(--accent); margin-bottom: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+  footer p, footer a { font-size: 0.9rem; color: var(--muted); text-decoration: none; line-height: 2; display: flex; align-items: center; gap: 0.6rem; font-weight: 300; transition: color 0.3s; }
+  footer a:hover { color: var(--accent); }
+  .footer-bottom { grid-column: 1 / -1; border-top: 1px solid var(--border-light); padding-top: 2rem; text-align: center; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center;}
+  
+  .social-links { display: flex; gap: 1.2rem; }
+  .social-links a { color: var(--muted); transition: color 0.3s; }
+  .social-links a:hover { color: var(--accent); }
+
+  @media (max-width: 960px) {
+    nav { display: none; }
+    .hamburger { display: inline-flex; }
+    .rooms-layout, .care-layout, .team-featured { grid-template-columns: 1fr; gap: 2rem; }
+    .filter-sidebar { position: static; margin-bottom: 2rem; }
+    .booking-layout, .detail-feature-list { grid-template-columns: 1fr; }
+    .summary-card { position: static; margin-top: 2rem; }
+    .amenity-row { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 4rem; }
+    .amenity-row:nth-child(even) .amenity-img-wrap { order: -1; }
+    .gallery-wow-grid .span-large, .gallery-wow-grid .span-tall, .gallery-wow-grid .span-wide { grid-column: span 1; grid-row: span 1; }
+    footer { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; }
+    .stepper { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Reusable SVG Icons defined for innerHTML injection -->
+  <script>
+    const ICONS = {
+      user: `<svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+      bed: `<svg class="icon" viewBox="0 0 24 24"><path d="M4 11V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4M4 11h16M4 11v6m16-6v6m-4-6v-4H8v4"/></svg>`,
+      size: `<svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3m13 5h3a2 2 0 0 0 2-2v-3"/></svg>`,
+      star: `<svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>`,
+      check: `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+      calendar: `<svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+      moon: `<svg class="icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+      card: `<svg class="icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+      lock: `<svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      car: `<svg class="icon" viewBox="0 0 24 24"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11M3 11h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6zM6 15h.01M18 15h.01"/></svg>`,
+      wallet: `<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>`,
+      layers: `<svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
+      mapPin: `<svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+      mail: `<svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+      phone: `<svg class="icon" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.14 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.9z"/></svg>`
+    };
+  </script>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Preloader -->
+  <div class="loader" id="loader">
+    <svg class="loader-mark" id="loaderMark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 58 Q35 42 50 58 Q65 74 82 58" stroke="#c8a97e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="50" cy="32" r="7" fill="#c8a97e"/>
+    </svg>
+    <div class="loader-brand" id="loaderBrand">L'HORIZON</div>
+    <div class="loader-sub" id="loaderSub">
+      <script>document.write(ICONS.mapPin);</script> Nasarawa State · Nigeria
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header id="siteHeader">
+    <a class="logo" onclick="switchView('home')">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M18 58 Q35 42 50 58 Q65 74 82 58" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="50" cy="32" r="8" fill="currentColor"/></svg>
+      L'Horizon
+    </a>
+    <nav>
+      <a onclick="switchView('home')" id="nav-home" class="active">Home</a>
+      <a onclick="switchView('rooms')" id="nav-rooms">Suites & Villas</a>
+      <a onclick="switchView('amenities')" id="nav-amenities">Hotel Features</a>
+      <a onclick="switchView('gallery')" id="nav-gallery">Gallery</a>
+      <a onclick="switchView('team')" id="nav-team">Leadership</a>
+      <a onclick="switchView('care')" id="nav-care">Concierge</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-accent" onclick="switchView('rooms')">
+        Reserve
+      </button>
+      <button class="hamburger" onclick="toggleMobilePanel(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="scrim" id="scrim" onclick="toggleMobilePanel(false)"></div>
+  <div class="mobile-panel" id="mobilePanel">
+    <button class="mobile-panel-close" onclick="toggleMobilePanel(false)" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+    </button>
+    <a onclick="switchView('home')">Home</a>
+    <a onclick="switchView('rooms')">Suites & Villas</a>
+    <a onclick="switchView('amenities')">Hotel Features</a>
+    <a onclick="switchView('gallery')">Gallery</a>
+    <a onclick="switchView('team')">Leadership</a>
+    <a onclick="switchView('care')">Concierge</a>
+  </div>
+
+  <!-- 1. LANDING PAGE -->
+  <div id="view-home" class="view-section active" style="padding-top:0;">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="gsap-hero">Luxury redefined, nestled in the heart of Nasarawa.</h1>
+        <p class="gsap-hero">An exclusive sanctuary hotel featuring estate residences, award-winning culinary fusions, and uncompromised privacy. Just a short, scenic drive from Abuja.</p>
+        
+        <div class="hero-highlights gsap-hero">
+          <span>48 Luxury Suites</span>
+          <span class="dot">•</span>
+          <span>Signature Dining</span>
+          <span class="dot">•</span>
+          <span>Exclusive Nature Trails</span>
+        </div>
+
+        <button class="btn-accent gsap-hero" style="padding: 1.2rem 2.5rem; font-size: 0.95rem;" onclick="switchView('rooms')">Explore Accommodations</button>
+      </div>
+      <div class="scroll-cue"><span>Scroll to discover</span><span class="line"></span></div>
+    </section>
+
+    <section class="section-pad reveal">
+      <div class="grid-2">
+        <div>
+          <span class="kicker"><span class="rule"></span>Philosophy</span>
+          <h2 class="section-title" style="margin-bottom: 1.5rem;">Built into nature, designed for tranquility.</h2>
+          <p style="color: var(--muted); line-height: 1.8; font-weight: 300; font-size: 1.05rem; margin-bottom: 2rem;">
+            L'Horizon recently opened its doors as the premier luxury hotel in Nasarawa State. Every villa and suite is meticulously designed in sustainable teak and natural limestone, oriented so the living spaces capture the breathtaking sunsets over the rolling hills and serene lakes. With a dedicated pavilion for our world-class restaurants, guests keep the pristine nature reserves entirely to themselves.
+          </p>
+          <button class="btn-outline" onclick="switchView('amenities')">Explore Hotel Features</button>
+        </div>
+        <div style="border-radius: 6px; overflow: hidden;">
+          <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200" style="width: 100%; height: 500px; object-fit: cover;" alt="Hotel overview">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad reveal" style="border-bottom: 1px solid var(--border-light);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+        <div>
+          <span class="kicker"><span class="rule"></span>Location</span>
+          <h2 class="section-title" style="margin-bottom:0;">Secluded, yet connected.</h2>
+        </div>
+      </div>
+      <div style="border-radius: 12px; overflow: hidden; height: 450px; border: 1px solid var(--border-light); position: relative;">
+        <!-- CSS filters invert the standard Google Map into a sleek dark mode -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126084.77196614486!2d8.4357736!3d8.932029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e76e5d762e873%3A0xc6e4c70f032ffdf!2sNasarawa!5e0!3m2!1sen!2sng!4v1710000000000!5m2!1sen!2sng" width="100%" height="100%" style="border:0; filter: grayscale(90%) invert(90%) contrast(85%);" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <section class="section-pad reveal" style="background: var(--surface); border-y: 1px solid var(--border-light);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="kicker"><span class="rule"></span>Featured Suites</span>
+          <h2 class="section-title" style="margin-bottom:0;">Your private sanctuary</h2>
+        </div>
+        <button class="btn-outline" onclick="switchView('rooms')">View all availability</button>
+      </div>
+      <div class="grid-3" id="featured-rooms-grid"></div>
+    </section>
+  </div>
+
+  <!-- 2. ROOMS & FILTERING -->
+  <div id="view-rooms" class="view-section section-pad">
+    <span class="kicker"><span class="rule"></span>Accommodation</span>
+    <h2 class="section-title" style="margin-bottom: 4rem;">Find your perfect stay</h2>
+
+    <div class="rooms-layout">
+      <!-- Left Sidebar Filters -->
+      <aside class="filter-sidebar">
+        <h4><script>document.write(ICONS.layers);</script> Filter Results</h4>
+        
+        <div class="field-group" style="margin-bottom: 1.5rem;">
+          <label><script>document.write(ICONS.layers);</script> Collection</label>
+          <select id="filter-type" onchange="renderRoomsGrid()">
+            <option value="all">All Collections</option>
+            <option value="single">Standard & Solo</option>
+            <option value="deluxe">Nature & Lake Views</option>
+            <option value="premium">Premium Suites</option>
+            <option value="family">Estates & Family</option>
+          </select>
+        </div>
+        <div class="field-group" style="margin-bottom: 1.5rem;">
+          <label><script>document.write(ICONS.wallet);</script> Max Budget: <span id="price-val" style="color:var(--accent); margin-left: auto;">₦2,000,000</span></label>
+          <input type="range" id="filter-price" min="100000" max="2000000" step="50000" value="2000000" oninput="document.getElementById('price-val').innerText='₦'+Number(this.value).toLocaleString('en-NG'); renderRoomsGrid();">
+        </div>
+        <div class="field-group" style="margin-bottom: 2rem;">
+          <label><script>document.write(ICONS.user);</script> Guests</label>
+          <select id="filter-guests" onchange="renderRoomsGrid()">
+            <option value="all">Any capacity</option>
+            <option value="1">1 guest</option>
+            <option value="2">2 guests</option>
+            <option value="4">4+ guests</option>
+            <option value="6">6+ guests</option>
+          </select>
+        </div>
+        <button class="btn-outline" style="width: 100%; justify-content: center;" onclick="resetFilters()">Reset Filters</button>
+      </aside>
+
+      <!-- Right Grid Results -->
+      <main class="grid-2" style="gap: 2.5rem;" id="main-rooms-grid"></main>
+    </div>
+  </div>
+
+  <!-- 3. ROOM DETAILS -->
+  <div id="view-room-detail" class="view-section section-pad">
+    <button class="btn-outline" style="margin-bottom: 2rem;" onclick="switchView('rooms')">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to all suites
+    </button>
+    <div id="room-detail-content"></div>
+  </div>
+
+  <!-- 4. BOOKING FLOW -->
+  <div id="view-booking" class="view-section section-pad">
+    <div class="stepper">
+      <div class="step-num active" id="step-ind-1"><span class="step-circle"><script>document.write(ICONS.user);</script></span>Details & Add-ons</div>
+      <div class="step-num" id="step-ind-2"><span class="step-circle"><script>document.write(ICONS.card);</script></span>Secure Payment</div>
+      <div class="step-num" id="step-ind-3"><span class="step-circle"><script>document.write(ICONS.check);</script></span>Confirmation</div>
+    </div>
+
+    <div class="booking-layout">
+      <div>
+        <!-- STEP 1 -->
+        <div id="booking-step-1">
+          <h3 class="section-title" style="font-size: 2rem; margin-bottom: 2rem;">Guest Information</h3>
+          <form id="form-guest-details" onsubmit="event.preventDefault(); goToStep(2);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+              <div class="field-group">
+                <label><script>document.write(ICONS.user);</script> First Name *</label>
+                <input type="text" id="guest-fname" required value="Lordship">
+              </div>
+              <div class="field-group">
+                <label><script>document.write(ICONS.user);</script> Last Name *</label>
+                <input type="text" id="guest-lname" required placeholder="Doe">
+              </div>
+            </div>
+            <div class="field-group" style="margin-bottom: 1.5rem;">
+              <label><script>document.write(ICONS.mail);</script> Email address *</label>
+              <input type="email" id="guest-email" required placeholder="you@example.com">
+            </div>
+            <div class="field-group" style="margin-bottom: 3rem;">
+              <label><script>document.write(ICONS.phone);</script> Phone number *</label>
+              <input type="tel" id="guest-phone" required placeholder="+234 800 000 0000">
+            </div>
+
+            <h3 class="section-title" style="font-size: 1.8rem; margin-bottom: 1.5rem;">Enhance your stay</h3>
+            <div class="payment-box" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="document.getElementById('addon-airport').click()">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="color: var(--accent);"><script>document.write(ICONS.car);</script></div>
+                <div>
+                  <strong style="font-family:var(--serif); font-size:1.2rem; display:block;">Abuja VIP Chauffeur</strong>
+                  <span style="font-size:0.85rem; color:var(--muted);">Private luxury SUV transfer from Nnamdi Azikiwe Intl (ABV)</span>
+                </div>
+              </div>
+              <div style="text-align: right; display: flex; align-items: center; gap: 1rem;">
+                <span style="color:var(--accent); font-weight:600;">₦75,000 flat</span>
+                <input type="checkbox" id="addon-airport" style="transform: scale(1.4); accent-color: var(--accent);" onchange="updateBookingTotal(); event.stopPropagation();">
+              </div>
+            </div>
+            <button type="submit" class="btn-accent" style="width: 100%; justify-content: center; padding: 1rem;">Continue to Secure Payment</button>
+          </form>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="booking-step-2" style="display:none;">
+          <h3 class="section-title" style="font-size: 2rem; margin-bottom: 2rem; display:flex; align-items:center; gap:0.6rem;">
+            <script>document.write(ICONS.lock);</script> Secure Payment
+          </h3>
+          <p style="color:var(--muted); margin-bottom: 2rem;">Please enter your payment details. This is a secure, encrypted connection to our payment gateway.</p>
+          
+          <div class="payment-box">
+            <div class="field-group" style="margin-bottom: 1.5rem;">
+              <label>Name on Card</label>
+              <input type="text" id="cc-name" required placeholder="JOHN DOE">
+            </div>
+            <div class="field-group" style="margin-bottom: 1.5rem;">
+              <label>Card Number</label>
+              <input type="text" id="cc-num" required placeholder="0000 0000 0000 0000" maxlength="19">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div class="field-group">
+                <label>Expiry (MM/YY)</label>
+                <input type="text" required placeholder="12/28" maxlength="5">
+              </div>
+              <div class="field-group">
+                <label>CVV</label>
+                <input type="password" required placeholder="123" maxlength="4">
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:1rem;">
+            <button class="btn-outline" onclick="goToStep(1)">Back</button>
+            <button class="btn-accent" style="flex:1; justify-content:center;" onclick="confirmFinalBooking()">Pay & Confirm Booking</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Summary Sidebar -->
+      <div>
+        <div class="summary-card">
+          <h4 style="font-family:var(--serif); font-size:1.5rem; margin-bottom:1.5rem; border-bottom:1px solid var(--border-light); padding-bottom:1rem;">Reservation Summary</h4>
+          <div id="summary-room-name" style="font-size:1.2rem; color:var(--accent); margin-bottom:1rem; font-weight:500;">Select a suite</div>
+          <div class="summary-row"><span><script>document.write(ICONS.calendar);</script> Check-in</span><strong id="summary-checkin" style="color:var(--text);">--</strong></div>
+          <div class="summary-row"><span><script>document.write(ICONS.calendar);</script> Check-out</span><strong id="summary-checkout" style="color:var(--text);">--</strong></div>
+          <div class="summary-row"><span><script>document.write(ICONS.moon);</script> Duration</span><span id="summary-nights">1 night</span></div>
+          <div class="summary-row" style="margin-top: 1rem;"><span>Room total</span><span id="summary-base-price">₦0</span></div>
+          <div class="summary-row"><span>Taxes & Service (12.5%)</span><span id="summary-tax">₦0</span></div>
+          <div class="summary-row"><span><script>document.write(ICONS.car);</script> Add-ons</span><span id="summary-addons-price">₦0</span></div>
+          <div class="summary-row total"><span>Total Charged Today</span><span id="summary-total">₦0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CONFIRMATION -->
+  <div id="view-confirmation" class="view-section section-pad">
+    <div class="confirmation-box">
+      <div class="check-icon"><script>document.write(ICONS.check);</script></div>
+      <h2 class="section-title" style="margin: 0 auto 0.5rem; max-width:none;">Payment Successful</h2>
+      <p style="color:var(--muted); font-size:1rem; margin-bottom:2.5rem;">Your booking is confirmed. Reference: <strong id="conf-ref" style="color:var(--accent); font-size: 1.1rem;">#LHN-84920</strong></p>
+
+      <div style="background:var(--surface); border:1px solid var(--border-light); padding:2rem; text-align:left; margin-bottom:2.5rem; border-radius: 6px;">
+        <h4 style="font-family:var(--serif); font-size:1.4rem; border-bottom:1px solid var(--border-light); padding-bottom:1rem; margin-bottom:1rem;">Booking Details</h4>
+        <div class="summary-row"><span>Suite</span><strong id="conf-room">--</strong></div>
+        <div class="summary-row"><span>Primary Guest</span><strong id="conf-guest">--</strong></div>
+        <div class="summary-row"><span>Check-in</span><strong id="conf-in">--</strong></div>
+        <div class="summary-row"><span>Check-out</span><strong id="conf-out">--</strong></div>
+        <div class="summary-row"><span>Amount Paid</span><strong id="conf-total" style="color:var(--accent); font-size:1.2rem;">--</strong></div>
+      </div>
+
+      <div style="display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;" class="no-print">
+        <button class="btn-accent" onclick="downloadReceiptAsPDF()">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Receipt
+        </button>
+        <button class="btn-outline" onclick="window.print()">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg> Print
+        </button>
+        <button class="btn-outline" onclick="switchView('home')">Return to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMENITIES (INCLUDES RESTAURANT) -->
+  <div id="view-amenities" class="view-section section-pad">
+    <span class="kicker"><span class="rule"></span>Hotel Features</span>
+    <h2 class="section-title" style="margin-bottom: 4rem;">World-class Amenities</h2>
+    
+    <div class="amenity-row reveal">
+      <div class="amenity-img-wrap">
+        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800" alt="Restaurant">
+      </div>
+      <div class="amenity-content">
+        <h3>The Akwanga Pavilion: Signature Dining</h3>
+        <p>Our award-winning hotel restaurant offers an unparalleled fine-dining experience. Overlooking the lush Nasarawa valleys, The Akwanga Pavilion serves contemporary Nigerian cuisine interwoven with classic Michelin-level techniques, utilizing fresh local produce and premium proteins, perfectly paired by our master Sommelier.</p>
+      </div>
+    </div>
+
+    <div class="amenity-row reveal">
+      <div class="amenity-img-wrap">
+        <img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&q=80&w=800" alt="Infinity Pool">
+      </div>
+      <div class="amenity-content">
+        <h3 style="display: flex; align-items: center; gap: 0.8rem;">
+          <span style="color: var(--accent);"><script>document.write(ICONS.moon);</script></span> 
+          Midnight Infinity Oasis
+        </h3>
+        <p>A sweeping, temperature-controlled infinity pool that merges seamlessly with the horizon. Outfitted with sunken fire pits and private cabanas, the Oasis remains open late into the evening for uninterrupted stargazing over the Nasarawa plains.</p>
+      </div>
+    </div>
+
+    <div class="amenity-row reveal">
+      <div class="amenity-img-wrap">
+        <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd64bd28?auto=format&fit=crop&q=80&w=800" alt="Wine Cellar">
+      </div>
+      <div class="amenity-content">
+        <h3 style="display: flex; align-items: center; gap: 0.8rem;">
+          <span style="color: var(--accent);"><script>document.write(ICONS.layers);</script></span> 
+          Subterranean Tasting Vault
+        </h3>
+        <p>Descend into our limestone-carved wine cellar. Curated by our Executive Sommelier, the vault houses an extensive collection of rare vintages and offers private, candle-lit tasting sessions paired with artisanal local cheeses and cured meats.</p>
+      </div>
+    </div>
+
+    <div class="amenity-row reveal">
+      <div class="amenity-img-wrap">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800" alt="Spa">
+      </div>
+      <div class="amenity-content">
+        <h3>Tranquil Spa & Wellness</h3>
+        <p>Suspended above a natural lake on the estate, our wellness sanctuary offers holistic therapies and deep-tissue treatments designed to rejuvenate your body. Experience our signature solid-mineral clay wraps and listen to the gentle breeze of the savannah.</p>
+      </div>
+    </div>
+
+    <div class="amenity-row reveal">
+      <div class="amenity-img-wrap">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800" alt="Athletics Center">
+      </div>
+      <div class="amenity-content">
+        <h3>High-Performance Athletics & Turf</h3>
+        <p>Maintain your stamina with our state-of-the-art fitness center. Complete with premium resistance equipment, a comprehensive range of cardio machines, and an outdoor athletic sprint turf perfect for agility drills and conditioning in the fresh air.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div id="view-gallery" class="view-section section-pad">
+    <span class="kicker"><span class="rule"></span>In pictures</span>
+    <h2 class="section-title" style="margin-bottom: 3rem;">Visualise your stay</h2>
+    <div class="gallery-wow-grid" id="gallery-grid-view"></div>
+  </div>
+
+  <div class="lightbox" id="galleryLightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImg" src="" alt="Gallery View">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <!-- TEAM SECTION -->
+  <div id="view-team" class="view-section section-pad">
+    <span class="kicker"><span class="rule"></span>Leadership</span>
+    <h2 class="section-title" style="margin-bottom: 4rem;">The visionaries behind L'Horizon</h2>
+    
+    <div class="team-featured reveal">
+      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" class="team-featured-img" alt="General Manager">
+      <div class="team-featured-content">
+        <p class="team-quote">True luxury isn't about excess; it's about anticipation. It is the art of knowing what a guest desires before they realize it themselves, right here in the heart of Nigeria.</p>
+        <h3 style="font-family: var(--serif); font-size: 2.2rem; margin-bottom: 0.5rem;">Arthur Pendelton</h3>
+        <p style="color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem;">General Manager</p>
+        <p style="color: var(--muted); line-height: 1.8;">Bringing over 20 years of bespoke luxury hospitality experience from across the globe to Nasarawa, Arthur ensures that every detail at L'Horizon is flawlessly executed. From operations to guest satisfaction, his philosophy shapes the very foundation of our hotel.</p>
+      </div>
+    </div>
+
+    <div class="team-grid-upgraded reveal" style="margin-top: 5rem;">
+      <div class="team-card-v2">
+        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=600" alt="Executive Chef">
+        <div class="role">Executive Chef</div>
+        <div class="name">Elena Rossi</div>
+        <p>A Michelin-starred visionary, Elena blends traditional Nigerian ingredients with modern European techniques to orchestrate the unforgettable menus at The Akwanga Pavilion.</p>
+      </div>
+      
+      <div class="team-card-v2">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" alt="Director of Wellness">
+        <div class="role">Director of Wellness</div>
+        <div class="name">Dr. Amina Yusuf</div>
+        <p>Holding advanced degrees in holistic therapy, Dr. Yusuf oversees the Tranquil Spa, developing bespoke recovery regimens that draw on indigenous solid-mineral therapies.</p>
+      </div>
+
+      <div class="team-card-v2">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Head of Guest Experience">
+        <div class="role">Head Concierge</div>
+        <div class="name">Marcus Thorne</div>
+        <p>With a background in elite luxury estate management, Marcus heads our VIP butler service, ensuring every excursion, transfer, and dining reservation is executed flawlessly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARE SECTION -->
+  <div id="view-care" class="view-section section-pad">
+    <span class="kicker"><span class="rule"></span>Concierge & Support</span>
+    <h2 class="section-title" style="margin-bottom: 4rem;">At your service, day and night.</h2>
+
+    <div class="care-layout">
+      <!-- Left: Contact Form -->
+      <div class="reveal">
+        <div class="contact-form-box">
+          <h3 style="font-family: var(--serif); font-size: 1.8rem; margin-bottom: 1.5rem;">Send an Inquiry</h3>
+          <p style="color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem;">Our concierge team typically responds within 2 hours to help curate your perfect stay.</p>
+          
+          <form onsubmit="event.preventDefault(); alert('Inquiry successfully sent. Our concierge will contact you shortly.'); this.reset();">
+            <div class="field-group" style="margin-bottom: 1.2rem;">
+              <label><script>document.write(ICONS.user);</script> Full Name</label>
+              <input type="text" required placeholder="Lordship">
+            </div>
+            <div class="field-group" style="margin-bottom: 1.2rem;">
+              <label><script>document.write(ICONS.mail);</script> Email Address</label>
+              <input type="email" required placeholder="you@example.com">
+            </div>
+            <div class="field-group" style="margin-bottom: 1.2rem;">
+              <label><script>document.write(ICONS.layers);</script> Inquiry Type</label>
+              <select>
+                <option>New Reservation</option>
+                <option>Modify Existing Booking</option>
+                <option>Dining Reservations</option>
+                <option>Excursions (Farin Ruwa etc.)</option>
+                <option>General Question</option>
+              </select>
+            </div>
+            <div class="field-group" style="margin-bottom: 2rem;">
+              <label>Message</label>
+              <textarea rows="4" required placeholder="How can we assist you?"></textarea>
+            </div>
+            <button type="submit" class="btn-accent" style="width: 100%;">Submit Inquiry</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right: Direct Contact & FAQs -->
+      <div class="reveal">
+        <h3 style="font-family: var(--serif); font-size: 1.8rem; margin-bottom: 1.5rem;">Direct Contact</h3>
+        <div class="contact-card-v2">
+          <div class="icon-wrap"><script>document.write(ICONS.phone);</script></div>
+          <div><h4>Global Reservations</h4><a href="tel:+2348000000000">+234 800 LHORIZON</a></div>
+        </div>
+        <div class="contact-card-v2" style="margin-bottom: 3rem;">
+          <div class="icon-wrap"><script>document.write(ICONS.mail);</script></div>
+          <div><h4>Email Us</h4><a href="mailto:concierge@lhorizon.com.ng">concierge@lhorizon.com.ng</a></div>
+        </div>
+
+        <h3 style="font-family: var(--serif); font-size: 1.8rem; margin-bottom: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="this.classList.toggle('active')">
+            How do I get to the hotel from Abuja airport?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-answer">
+            L'Horizon is accessible via a smooth luxury chauffeur drive directly from Nnamdi Azikiwe International Airport (Abuja) to our estate in Nasarawa. Our VIP transfer service can be added to your booking at checkout.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="this.classList.toggle('active')">
+            Are children allowed at the hotel?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-answer">
+            Yes, children are welcome. We recommend our Family & Estates collection for guests traveling with younger children, as they offer secure, enclosed garden pools and expansive play areas within the estate.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <a class="logo" style="margin-bottom:1.5rem;" onclick="switchView('home')">
+        <svg viewBox="0 0 100 100"><path d="M18 58 Q35 42 50 58 Q65 74 82 58" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="50" cy="32" r="8" fill="currentColor"/></svg>
+        L'Horizon
+      </a>
+      <p style="max-width:280px; margin-top: 1rem;">Forty-eight luxury suites and estate villas nestled in the serene landscapes of Nasarawa State, Nigeria.</p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a onclick="switchView('rooms')">Suites &amp; Villas</a>
+      <a onclick="switchView('amenities')">Hotel Features</a>
+      <a onclick="switchView('gallery')">The Gallery</a>
+      <a onclick="switchView('team')">Leadership Team</a>
+    </div>
+    <div>
+      <h5>Connect</h5>
+      <a onclick="switchView('care')">Concierge & Care</a>
+      <a href="mailto:contact@lhorizon.com.ng">contact@lhorizon.com.ng</a>
+    </div>
+    
+    <div class="footer-bottom">
+      <div>© 2026 L'Horizon Sanctuary &amp; Hotel, Nasarawa. All rights reserved.</div>
+      <div class="social-links">
+        <!-- Instagram -->
+        <a href="#" aria-label="Instagram"><svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <!-- Twitter/X -->
+        <a href="#" aria-label="Twitter"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+        <!-- Facebook -->
+        <a href="#" aria-label="Facebook"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <!-- LinkedIn -->
+        <a href="#" aria-label="LinkedIn"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    const formatCurrency = (num) => '₦' + num.toLocaleString('en-NG');
+
+    const roomsData = [
+      { id: 'r1', name: 'Savannah View Room', type: 'single', price: 120000, guests: 2, sqm: '65 m²', bed: 'King bed', rating: 4.6,
+        desc: 'Our refined entry-level room positioned on the upper levels of the main house, featuring sweeping panoramic views of the rolling Nasarawa savannah from a private balcony.',
+        img: 'https://images.unsplash.com/photo-1618773928120-2c15c3660be8?auto=format&fit=crop&q=80&w=1000',
+        features: ['Private savannah-view balcony', 'Rainfall shower', 'Artisan toiletries', 'High-speed Wi-Fi', 'Smart TV with streaming', 'Nespresso coffee machine'] },
+      { id: 'r2', name: 'Hillside Suite', type: 'single', price: 180000, guests: 2, sqm: '95 m²', bed: 'Queen bed', rating: 4.7,
+        desc: 'A terraced suite designed for couples, with an outdoor rainfall shower, teak deck, and a hammock overlooking the lush green hills.',
+        img: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1000',
+        features: ['Outdoor rainfall shower', 'Teak deck with hammock', 'Premium sound system', 'Fully stocked minibar', 'High-speed Wi-Fi', 'Smart TV with streaming'] },
+      { id: 'r3', name: 'Lakefront Retreat', type: 'single', price: 250000, guests: 2, sqm: '130 m²', bed: 'King bed', rating: 4.8,
+        desc: 'Set back amongst the indigenous flora just steps from the natural lake, featuring a large freestanding bathtub, a private courtyard, and direct water access.',
+        img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000',
+        features: ['Direct lake access', 'Freestanding soaking tub', 'Private landscaped courtyard', 'Double vanity sinks', 'Evening turndown service', 'Complimentary minibar'] },
+      { id: 'r4', name: 'Garden Oasis Room', type: 'single', price: 200000, guests: 2, sqm: '110 m²', bed: 'King bed', rating: 4.8,
+        desc: 'Tucked into the lush tropical foliage of the estate interior, offering total seclusion, a private plunge pool, and a shaded outdoor lounge.',
+        img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1000',
+        features: ['Private plunge pool', 'Shaded outdoor lounge', 'Walk-in wardrobe', 'Bose Bluetooth speakers', '24/7 Room service', 'Plush bathrobes & slippers'] },
+      { id: 'r5', name: 'Farin Ruwa Villa', type: 'deluxe', price: 350000, guests: 2, sqm: '180 m²', bed: 'King bed', rating: 4.9,
+        desc: 'Inspired by the famous waterfalls, this villa sits gracefully over the estate lake. Featuring a glass floor panel and a private infinity plunge pool that catches the sunset every evening.',
+        img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000',
+        features: ['Over-lake infinity pool', 'Glass floor viewing panel', 'Dedicated villa host', 'In-villa wine fridge', 'Automated blackout blinds', 'Outdoor dining area'] },
+      { id: 'r6', name: 'Quartz Suite', type: 'deluxe', price: 400000, guests: 2, sqm: '200 m²', bed: 'King bed', rating: 4.9,
+        desc: 'Nasarawa is the home of solid minerals. This suite honors that heritage with stunning stone architecture, elevated views, and a massive private deck.',
+        img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1000',
+        features: ['Wrap-around stone deck', 'Panoramic valley views', 'Spacious separate living area', 'Dual rainfall showers', 'Premium complimentary liquors', 'Daily fresh fruit basket'] },
+      { id: 'r7', name: 'Penthouse Suite', type: 'premium', price: 600000, guests: 2, sqm: '280 m²', bed: 'King bed', rating: 5.0,
+        desc: 'An elevated, dual-level suite offering the highest vantage point in the hotel. Features a rooftop terrace, private dining area, and 24/7 butler service.',
+        img: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=1000',
+        features: ['24/7 Private Butler', 'Dual-level layout', 'Rooftop dining terrace', 'Jacuzzi with skyline views', 'VIP Airport Fast-Track', 'Priority restaurant booking'] },
+      { id: 'r8', name: 'Family Pavilion', type: 'family', price: 500000, guests: 4, sqm: '340 m²', bed: '2 King beds', rating: 4.9,
+        desc: 'Two connected pavilions around a private garden pool, featuring a dedicated butler and a large outdoor dining table perfect for family getaways from the city.',
+        img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1000',
+        features: ['Two separate master bedrooms', 'Large private garden pool', 'Family-sized outdoor dining', 'Kids entertainment console', 'Dedicated Butler', 'Daily bespoke breakfast'] },
+      { id: 'r9', name: 'Royal Presidential Residence', type: 'premium', price: 850000, guests: 4, sqm: '450 m²', bed: '2 King beds', rating: 5.0,
+        desc: 'The pinnacle of luxury at the edge of the estate. Features a private cinema room, a massive infinity pool, a private gym, and an on-call chef.',
+        img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000',
+        features: ['Private cinema room', 'In-suite fitness center', 'Massive infinity pool', 'On-call private chef', 'Complimentary Abuja Chauffeur', 'Unrestricted premium minibar'] },
+      { id: 'r10', name: 'The Nasarawa Estate', type: 'family', price: 1500000, guests: 8, sqm: '1200 m²', bed: '4 King beds', rating: 5.0,
+        desc: 'A completely private compound on the edge of the property. Four distinct master suites, private lake access, personal spa pavilion, and dedicated staff quarters.',
+        img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000',
+        features: ['Four master suites', 'Private in-estate Spa', 'Dedicated staff & security', 'Private lake dock & boats', 'Full bespoke catering', 'Exclusive estate buggies'] }
+    ];
+
+    const galleryImages = [
+      { src: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000', caption: 'Lakeside Serenity' },
+      { src: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1000', caption: 'The Akwanga Pavilion' },
+      { src: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1000', caption: 'Hillside Suite Terrace' },
+      { src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1000', caption: 'Family Pavilion Pool' },
+      { src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000', caption: 'Nature Edge' },
+      { src: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000', caption: 'Private Outdoor Dining' },
+      { src: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1000', caption: 'Lush Views' },
+      { src: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=1000', caption: 'VIP Estate Arrival' },
+      { src: 'https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?auto=format&fit=crop&q=80&w=1000', caption: 'Hotel Amenities' }
+    ];
+
+    let currentBooking = {
+      checkIn: '', checkOut: '',
+      selectedRoom: null, calculatedTotal: 0
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const tl = gsap.timeline();
+      tl.to('#loaderMark', { opacity: 1, duration: 0.5 })
+        .to('#loaderBrand', { clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 1.1, ease: "power4.inOut" }, "-=0.1")
+        .to('#loaderSub', { opacity: 1, duration: 0.5 }, "-=0.3")
+        .to('#loader', { yPercent: -100, duration: 0.8, ease: "expo.inOut" }, "+=0.3")
+        .from('.gsap-hero', { y: 40, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out" }, "-=0.4");
+
+      renderFeaturedRooms();
+      renderRoomsGrid();
+      renderGallery();
+      setupReveal();
+
+      window.addEventListener('scroll', () => {
+        document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 40);
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        document.getElementById('scrollProgress').style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      });
+    });
+
+    function setupReveal() {
+      const items = document.querySelectorAll('.reveal, .room-card, .team-card-v2, .amenity-row');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('in-view'), i * 80);
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      items.forEach(el => { el.classList.add('reveal'); io.observe(el); });
+    }
+
+    function toggleMobilePanel(open) {
+      document.getElementById('mobilePanel').classList.toggle('open', open);
+      document.getElementById('scrim').classList.toggle('open', open);
+    }
+
+    function switchView(viewId) {
+      toggleMobilePanel(false);
+      document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+      const targetView = document.getElementById('view-' + viewId);
+      if (targetView) {
+        targetView.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => targetView.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view')), 100);
+      }
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      const activeNav = document.getElementById('nav-' + viewId);
+      if (activeNav) activeNav.classList.add('active');
+    }
+
+    function createRoomCardHTML(room) {
+      let badgeText = 'Premium Suite';
+      if (room.type === 'family') badgeText = 'Sleeps 4+';
+      if (room.type === 'single') badgeText = 'Standard & Solo';
+      if (room.type === 'deluxe') badgeText = 'Nature & Lake';
+      if (room.type === 'premium') badgeText = 'Ultra Luxury';
+
+      return `
+        <div class="room-card reveal">
+          <div class="room-img-wrap" onclick="openRoomDetail('${room.id}')">
+            <img src="${room.img}" alt="${room.name}">
+            <span class="room-badge">${badgeText}</span>
+          </div>
+          <div class="room-info">
+            <div class="room-price">${formatCurrency(room.price)}<span style="font-size:0.75rem; color:var(--muted);"> /night</span></div>
+            <div class="room-name" onclick="openRoomDetail('${room.id}')">${room.name}</div>
+            <div class="room-rating">${ICONS.star.repeat(5)}<span style="color:var(--muted); margin-left:0.4rem;">${room.rating}</span></div>
+            <p class="room-desc">${room.desc}</p>
+            <div class="room-footer">
+              <span class="room-specs">
+                <span>${ICONS.user} ${room.guests} guests</span>
+                <span>${ICONS.bed} ${room.bed}</span>
+                <span>${ICONS.size} ${room.sqm}</span>
+              </span>
+              <button class="btn-outline" style="padding: 0.5rem 1rem;" onclick="openRoomDetail('${room.id}')">Select</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderFeaturedRooms() {
+      const featured = roomsData.filter(r => ['r5', 'r8', 'r9'].includes(r.id));
+      document.getElementById('featured-rooms-grid').innerHTML = featured.map(createRoomCardHTML).join('');
+    }
+
+    function renderRoomsGrid() {
+      const type = document.getElementById('filter-type').value;
+      const maxPrice = parseFloat(document.getElementById('filter-price').value);
+      const guests = document.getElementById('filter-guests').value;
+      
+      const filtered = roomsData.filter(room =>
+        (type === 'all' || room.type === type) &&
+        room.price <= maxPrice &&
+        (guests === 'all' || room.guests >= parseInt(guests))
+      );
+      
+      const container = document.getElementById('main-rooms-grid');
+      container.innerHTML = filtered.length
+        ? filtered.map(createRoomCardHTML).join('')
+        : `<p style="color:var(--muted); font-size: 1.1rem; grid-column:1/-1;">No suites currently match those filters. Try adjusting your budget or party size.</p>`;
+        
+      setTimeout(() => container.querySelectorAll('.room-card').forEach(el => el.classList.add('in-view')), 50);
+    }
+
+    function renderGallery() {
+      document.getElementById('gallery-grid-view').innerHTML = galleryImages.map((g, index) => {
+        let spanClass = '';
+        if (index === 0) spanClass = 'span-large';
+        else if (index === 3 || index === 7) spanClass = 'span-tall';
+        else if (index === 6) spanClass = 'span-wide';
+        
+        return `
+        <div class="g-item reveal ${spanClass}" onclick="openLightbox('${g.src}', '${g.caption}')">
+          <div class="g-overlay">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </div>
+          <img src="${g.src}" alt="${g.caption}">
+          <div class="g-caption">${g.caption}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function openLightbox(src, caption) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').innerText = caption;
+      document.getElementById('galleryLightbox').classList.add('active');
+    }
+    
+    function closeLightbox() {
+      document.getElementById('galleryLightbox').classList.remove('active');
+    }
+
+    function resetFilters() {
+      document.getElementById('filter-type').value = 'all';
+      document.getElementById('filter-price').value = 2000000;
+      document.getElementById('price-val').innerText = '₦2,000,000';
+      document.getElementById('filter-guests').value = 'all';
+      renderRoomsGrid();
+    }
+
+    function openRoomDetail(roomId) {
+      const room = roomsData.find(r => r.id === roomId);
+      if (!room) return;
+      currentBooking.selectedRoom = room;
+
+      let collectionName = 'Suite Collection';
+      if(room.type === 'family') collectionName = 'Estates & Family';
+      if(room.type === 'premium') collectionName = 'Ultra Luxury Collection';
+      if(room.type === 'deluxe') collectionName = 'Nature & Lake Views';
+
+      const featuresHTML = room.features.map(f => `<li>${ICONS.check} ${f}</li>`).join('');
+
+      let benefitsHTML = `
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          <div>
+            <h5>Complimentary Breakfast</h5>
+            <p>Daily bespoke breakfast served at The Akwanga Pavilion or in your room.</p>
+          </div>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          <div>
+            <h5>Welcome Amenities</h5>
+            <p>Welcome drinks upon arrival and daily replenishment of fresh local fruit.</p>
+          </div>
+        </div>
+      `;
+
+      if (room.type === 'premium' || room.type === 'family') {
+        benefitsHTML += `
+        <div class="benefit-card" style="border-color: var(--accent);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <div>
+            <h5 style="color: var(--accent);">VIP Concierge & Butler</h5>
+            <p>Dedicated 24/7 staff to manage packing, reservations, and bespoke excursions.</p>
+          </div>
+        </div>`;
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      const tomorrowDate = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+      document.getElementById('room-detail-content').innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.2rem; flex-wrap: wrap;">
+          <div>
+            <span class="kicker"><span class="rule"></span>${collectionName}</span>
+            <h2 class="section-title" style="margin-bottom:0;">${room.name}</h2>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:var(--serif); font-size:2.5rem; color:var(--accent);">${formatCurrency(room.price)}</div>
+            <span style="font-size:0.85rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">per night (NGN)</span>
+          </div>
+        </div>
+
+        <div style="border-radius: 6px; overflow:hidden; height: 500px; margin-bottom: 4rem;">
+          <img src="${room.img}" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+
+        <div class="grid-2" style="align-items: start;">
+          <div>
+            <h3 style="font-family:var(--serif); font-size:1.8rem; margin-bottom:1.5rem;">The Experience</h3>
+            <p style="color:var(--muted); line-height:1.9; font-size: 1.05rem; margin-bottom:2.5rem;">${room.desc}</p>
+            
+            <h3 style="font-family:var(--serif); font-size:1.8rem; margin-bottom:1.5rem;">Room Amenities</h3>
+            <ul class="detail-feature-list">
+              ${featuresHTML}
+            </ul>
+
+            <h3 style="font-family:var(--serif); font-size:1.8rem; margin-bottom:1.5rem;">Exclusive Benefits</h3>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:2rem;">
+              ${benefitsHTML}
+            </div>
+          </div>
+          
+          <div>
+            <div class="summary-card">
+              <h4 style="font-family:var(--serif); font-size:1.5rem; margin-bottom:1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">Reserve this Suite</h4>
+              
+              <div style="display:flex; gap: 1rem; margin-bottom:1.5rem;">
+                <div class="field-group" style="flex:1;">
+                  <label>${ICONS.calendar} Check-in *</label>
+                  <input type="date" id="detail-checkin" min="${today}" onchange="updateDetailPrice(${room.price})">
+                </div>
+                <div class="field-group" style="flex:1;">
+                  <label>${ICONS.calendar} Check-out *</label>
+                  <input type="date" id="detail-checkout" min="${tomorrowDate}" onchange="updateDetailPrice(${room.price})">
+                </div>
+              </div>
+
+              <div class="summary-row"><span>${ICONS.wallet} Base Rate</span><strong>${formatCurrency(room.price)} / night</strong></div>
+              <div class="summary-row"><span>${ICONS.moon} Duration</span><strong id="detail-nights">--</strong></div>
+              <div class="summary-row" style="border-bottom:none; margin-top:1rem; font-size:1.2rem; color:var(--accent);">
+                <span>Total Base</span><strong id="detail-total">₦0</strong>
+              </div>
+              
+              <button class="btn-accent" style="width:100%; margin-top:1.5rem; justify-content:center; padding: 1.2rem;" onclick="startBookingFlow()">Proceed to Secure Booking</button>
+            </div>
+          </div>
+        </div>`;
+      switchView('room-detail');
+    }
+
+    function updateDetailPrice(price) {
+      const checkin = document.getElementById('detail-checkin').value;
+      const checkout = document.getElementById('detail-checkout').value;
+      
+      if(!checkin || !checkout) return;
+      
+      const start = new Date(checkin);
+      const end = new Date(checkout);
+      
+      if(end <= start) {
+        document.getElementById('detail-checkout').value = ''; 
+        alert("Check-out date must be after your Check-in date.");
+        document.getElementById('detail-nights').innerText = '--';
+        document.getElementById('detail-total').innerText = '₦0';
+        return;
+      }
+      
+      const nights = Math.ceil(Math.abs(end - start) / 86400000);
+      document.getElementById('detail-nights').innerText = nights + (nights === 1 ? ' night' : ' nights');
+      document.getElementById('detail-total').innerText = formatCurrency(price * nights);
+    }
+
+    function startBookingFlow() { 
+      const checkin = document.getElementById('detail-checkin').value;
+      const checkout = document.getElementById('detail-checkout').value;
+      
+      if(!checkin || !checkout) {
+        alert("Please select your check-in and check-out dates to continue.");
+        return;
+      }
+      
+      const start = new Date(checkin);
+      const end = new Date(checkout);
+      if (end <= start) {
+         alert("Check-out date must be after Check-in date.");
+         return;
+      }
+
+      currentBooking.checkIn = checkin;
+      currentBooking.checkOut = checkout;
+
+      switchView('booking'); 
+      updateBookingTotal(); 
+      goToStep(1); 
+    }
+
+    function goToStep(stepNum) {
+      [1, 2, 3].forEach(n => {
+        const stepEl = document.getElementById('booking-step-' + n);
+        if(stepEl) stepEl.style.display = (n === stepNum) ? 'block' : 'none';
+        
+        const ind = document.getElementById('step-ind-' + n);
+        ind.classList.toggle('active', n === stepNum);
+        ind.classList.toggle('done', n < stepNum);
+      });
+    }
+
+    function updateBookingTotal() {
+      const room = currentBooking.selectedRoom;
+      if (!room) return;
+      const start = new Date(currentBooking.checkIn);
+      const end = new Date(currentBooking.checkOut);
+      let nights = Math.max(1, Math.ceil(Math.abs(end - start) / 86400000));
+      
+      const baseTotal = room.price * nights;
+      const tax = baseTotal * 0.125; 
+      let addonsTotal = 0;
+      
+      const airportCheck = document.getElementById('addon-airport');
+      if (airportCheck && airportCheck.checked) addonsTotal += 75000;
+      
+      const grandTotal = baseTotal + tax + addonsTotal;
+
+      document.getElementById('summary-room-name').innerText = room.name;
+      document.getElementById('summary-checkin').innerText = currentBooking.checkIn;
+      document.getElementById('summary-checkout').innerText = currentBooking.checkOut;
+      document.getElementById('summary-nights').innerText = nights + (nights === 1 ? ' night' : ' nights');
+      document.getElementById('summary-base-price').innerText = formatCurrency(baseTotal);
+      document.getElementById('summary-tax').innerText = formatCurrency(tax);
+      document.getElementById('summary-addons-price').innerText = formatCurrency(addonsTotal);
+      document.getElementById('summary-total').innerText = formatCurrency(grandTotal);
+      
+      currentBooking.calculatedTotal = grandTotal;
+    }
+
+    function confirmFinalBooking() {
+      const cc = document.getElementById('cc-num').value;
+      if(!cc || cc.length < 15) {
+        alert("Please enter a valid simulated card number.");
+        return;
+      }
+      
+      goToStep(3); 
+      const ref = '#LHN-' + Math.floor(10000 + Math.random() * 90000); 
+      const fname = document.getElementById('guest-fname').value || 'Guest';
+      const lname = document.getElementById('guest-lname').value || '';
+      
+      document.getElementById('conf-ref').innerText = ref;
+      document.getElementById('conf-room').innerText = currentBooking.selectedRoom.name;
+      document.getElementById('conf-guest').innerText = `${fname} ${lname}`;
+      document.getElementById('conf-in').innerText = currentBooking.checkIn;
+      document.getElementById('conf-out').innerText = currentBooking.checkOut;
+      document.getElementById('conf-total').innerText = formatCurrency(currentBooking.calculatedTotal);
+      
+      switchView('confirmation');
+      
+      const path = document.querySelector('.check-icon svg path');
+      if (path) {
+        path.style.strokeDasharray = '40';
+        path.style.strokeDashoffset = '40';
+        path.style.transition = 'stroke-dashoffset 0.8s ease-out 0.2s';
+        setTimeout(() => path.style.strokeDashoffset = '0', 50);
+      }
+    }
+
+    function downloadReceiptAsPDF() {
+      const element = document.querySelector('.confirmation-box');
+      const ref = document.getElementById('conf-ref').innerText;
+      
+      const opt = {
+        margin:       0.5,
+        filename:     `LHorizon-Booking-${ref}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      const buttonContainer = document.querySelector('.no-print');
+      buttonContainer.style.display = 'none';
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        buttonContainer.style.display = 'flex';
+      });
+    }
+  </script>
+</body>
+</html>
